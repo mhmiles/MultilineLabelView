@@ -48,7 +48,7 @@ public class MultilineLabelView: UIView {
     fileprivate var deallocDisposable: ScopedDisposable<AnyDisposable>?
     
     private func configureLabels() {
-        dataSource.producer.flatMap(.latest, transform: { dataSource -> SignalProducer<[NSAttributedString], NoError> in
+        _ = dataSource.producer.flatMap(.latest, transform: { dataSource -> SignalProducer<[NSAttributedString], NoError> in
             return dataSource?.stringsProducer ?? SignalProducer(value: [NSAttributedString]())
         }).skipRepeats({ current, previous in
             let extractString: (NSAttributedString) -> String = {
@@ -73,18 +73,16 @@ public class MultilineLabelView: UIView {
         }).startWithValues(configureNewStackView)
         
         let disposable = NotificationCenter.default.rac_notifications(forName: Notification.Name.UIApplicationWillEnterForeground).startWithValues { _ in
-            self.animationProducer?.start()
+            self.animationDisposable.innerDisposable = self.animationProducer?.start()
         }
         
         deallocDisposable = ScopedDisposable(disposable)
     }
     
-    private var animationDisposable: Disposable?
     private var animationProducer: SignalProducer<(), NoError>?
+    private let animationDisposable = SerialDisposable()
     
     private func configureNewStackView(labels: [UILabel]) {
-        animationDisposable?.dispose()
-        
         self.stackView = UIStackView()
         
         let stackCenterXConstraint = stackView.centerXAnchor.constraint(equalTo: centerXAnchor, constant: frame.width)
@@ -135,6 +133,8 @@ public class MultilineLabelView: UIView {
                         }, completion: { success in
                             observer.sendCompleted()
                     })
+                    
+                    disposable += ActionDisposable(action: view.layer.removeAllAnimations)
                 }
             } else {
                 view.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
@@ -157,7 +157,7 @@ public class MultilineLabelView: UIView {
             self.layoutIfNeeded()
         }) { (success: Bool) -> Void in
             if success {
-                self.animationProducer?.start()
+                self.animationDisposable.innerDisposable = self.animationProducer?.start()
             }
             
         }
