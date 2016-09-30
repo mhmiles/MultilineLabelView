@@ -8,12 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		028B3D601D9EF2A500924284 /* MultilineLabelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 028B3D5E1D9EF2A500924284 /* MultilineLabelView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		028B3D671D9EF2AF00924284 /* MultilineLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028B3D661D9EF2AF00924284 /* MultilineLabelView.swift */; };
+		028B3D6F1D9EF4F200924284 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 028B3D6D1D9EF4F200924284 /* ReactiveSwift.framework */; };
+		028B3D701D9EF4F200924284 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 028B3D6E1D9EF4F200924284 /* Result.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		028B3D5B1D9EF2A500924284 /* MultilineLabelView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MultilineLabelView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		028B3D5E1D9EF2A500924284 /* MultilineLabelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultilineLabelView.h; sourceTree = "<group>"; };
 		028B3D5F1D9EF2A500924284 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		028B3D661D9EF2AF00924284 /* MultilineLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultilineLabelView.swift; sourceTree = "<group>"; };
+		028B3D6A1D9EF4DE00924284 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		028B3D6D1D9EF4F200924284 /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveSwift.framework; path = Carthage/Build/iOS/ReactiveSwift.framework; sourceTree = "<group>"; };
+		028B3D6E1D9EF4F200924284 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -21,6 +28,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				028B3D6F1D9EF4F200924284 /* ReactiveSwift.framework in Frameworks */,
+				028B3D701D9EF4F200924284 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -30,8 +39,10 @@
 		028B3D511D9EF2A500924284 = {
 			isa = PBXGroup;
 			children = (
+				028B3D6A1D9EF4DE00924284 /* Cartfile */,
 				028B3D5D1D9EF2A500924284 /* MultilineLabelView */,
 				028B3D5C1D9EF2A500924284 /* Products */,
+				028B3D6C1D9EF4F200924284 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -47,9 +58,19 @@
 			isa = PBXGroup;
 			children = (
 				028B3D5E1D9EF2A500924284 /* MultilineLabelView.h */,
+				028B3D661D9EF2AF00924284 /* MultilineLabelView.swift */,
 				028B3D5F1D9EF2A500924284 /* Info.plist */,
 			);
 			path = MultilineLabelView;
+			sourceTree = "<group>";
+		};
+		028B3D6C1D9EF4F200924284 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				028B3D6D1D9EF4F200924284 /* ReactiveSwift.framework */,
+				028B3D6E1D9EF4F200924284 /* Result.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -96,6 +117,7 @@
 					028B3D5A1D9EF2A500924284 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = 7XLNECBC46;
+						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -132,6 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				028B3D671D9EF2AF00924284 /* MultilineLabelView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,18 +263,24 @@
 		028B3D641D9EF2A500924284 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 7XLNECBC46;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = MultilineLabelView/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hollylabs.MultilineLabelView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -259,12 +288,17 @@
 		028B3D651D9EF2A500924284 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 7XLNECBC46;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = MultilineLabelView/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
