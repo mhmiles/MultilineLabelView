@@ -61,12 +61,7 @@ public class MultilineLabelView: UIView {
                 let label = UILabel()
                 label.translatesAutoresizingMaskIntoConstraints = false
                 
-                let mutableAttributedString = NSMutableAttributedString(attributedString: string)
-                mutableAttributedString.addAttributes([
-                    NSForegroundColorAttributeName: UIColor.white
-                    ], range: NSMakeRange(0, string.length))
-                
-                label.attributedText = mutableAttributedString
+                label.attributedText = string
                 
                 return label
             }
