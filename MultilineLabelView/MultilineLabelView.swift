@@ -20,6 +20,7 @@ public class MultilineLabelView: UIView {
             
             addSubview(stackView)
             stackView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             
             UIView.animate(withDuration: 0.3, animations: {
                 oldValue.alpha = 0.0
@@ -67,11 +68,13 @@ public class MultilineLabelView: UIView {
             }
         }).startWithValues(configureNewStackView)
         
-        let disposable = NotificationCenter.default.rac_notifications(forName: Notification.Name.UIApplicationWillEnterForeground).startWithValues { _ in
+        let disposable = NotificationCenter.default.reactive.notifications(forName: Notification.Name.UIApplicationWillEnterForeground).observeValues { _ in
             self.animationDisposable.innerDisposable = self.animationProducer?.start()
         }
         
-        deallocDisposable = ScopedDisposable(disposable)
+        if let disposable = disposable {
+            deallocDisposable = ScopedDisposable(disposable)
+        }
     }
     
     private var animationProducer: SignalProducer<(), NoError>?
@@ -82,7 +85,6 @@ public class MultilineLabelView: UIView {
         
         let stackCenterXConstraint = stackView.centerXAnchor.constraint(equalTo: centerXAnchor, constant: frame.width)
         addConstraint(stackCenterXConstraint)
-        addConstraint(stackView.centerYAnchor.constraint(equalTo: centerYAnchor))
         
         if labels.count == 0 {
             return
