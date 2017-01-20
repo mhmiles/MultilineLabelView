@@ -69,7 +69,7 @@ public class MultilineLabelView: UIView {
         }).startWithValues(configureNewStackView)
         
         let disposable = NotificationCenter.default.reactive.notifications(forName: Notification.Name.UIApplicationWillEnterForeground).observeValues { _ in
-            self.animationDisposable.innerDisposable = self.animationProducer?.start()
+            self.animationDisposable.inner = self.animationProducer?.start()
         }
         
         if let disposable = disposable {
@@ -144,9 +144,9 @@ public class MultilineLabelView: UIView {
         layoutIfNeeded()
         
         if animationProducers.count > 0 {
-            animationProducer = SignalProducer<SignalProducer<(), NoError>, NoError>(values: animationProducers).flatMap(.merge, transform: {
+            animationProducer = SignalProducer<SignalProducer<(), NoError>, NoError>(animationProducers).flatMap(.merge, transform: {
                 $0
-            }).times(Int.max)
+            }).repeat(Int.max)
         }
         
         UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0.0, options: [], animations: {
@@ -154,7 +154,7 @@ public class MultilineLabelView: UIView {
             self.layoutIfNeeded()
         }) { (success: Bool) -> Void in
             if success {
-                self.animationDisposable.innerDisposable = self.animationProducer?.start()
+                self.animationDisposable.inner = self.animationProducer?.start()
             }
             
         }
