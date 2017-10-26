@@ -32,7 +32,7 @@ public class MultilineLabelView: UIView {
   
   fileprivate var labelCenterConstraints: [NSLayoutConstraint]?
   
-  public var dataSource = MutableProperty<MultilaneLabelViewDataSource?>(nil)
+  public var dataSource = MutableProperty<MultilineLabelViewDataSource?>(nil)
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -163,6 +163,6 @@ public class MultilineLabelView: UIView {
 
 public typealias MultilineLabelStringsProducer = SignalProducer<[NSAttributedString], NoError>
 
-public protocol MultilaneLabelViewDataSource {
+public protocol MultilineLabelViewDataSource {
   var stringsProducer: MultilineLabelStringsProducer { get }
 }
