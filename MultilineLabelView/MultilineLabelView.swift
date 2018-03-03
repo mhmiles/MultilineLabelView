@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import ReactiveSwift
 import NotificationCenter
-import enum Result.NoError
+import RxSwift
+import RxCocoa
 
 public class MultilineLabelView: UIView {
   fileprivate var stackView = UIStackView() {
@@ -32,7 +32,7 @@ public class MultilineLabelView: UIView {
   
   fileprivate var labelCenterConstraints: [NSLayoutConstraint]?
   
-  public var dataSource = MutableProperty<MultilineLabelViewDataSource?>(nil)
+  public var strings = Variable<[NSAttributedString]>([])
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -46,18 +46,10 @@ public class MultilineLabelView: UIView {
     configureLabels()
   }
   
-  fileprivate var deallocDisposable: ScopedDisposable<AnyDisposable>?
+  fileprivate let bag = DisposeBag()
   
   private func configureLabels() {
-    _ = dataSource.producer.flatMap(.latest, { dataSource -> SignalProducer<[NSAttributedString], NoError> in
-      return dataSource?.stringsProducer ?? SignalProducer(value: [NSAttributedString]())
-    }).skipRepeats({ current, previous in
-      let extractString: (NSAttributedString) -> String = {
-        $0.string
-      }
-      
-      return current.map(extractString).elementsEqual(previous.map(extractString))
-    }).map({ strings -> [UILabel] in
+    strings.asObservable().map { (strings) -> [UILabel] in
       strings.map { string in
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -66,19 +58,15 @@ public class MultilineLabelView: UIView {
         
         return label
       }
-    }).startWithValues(configureNewStackView)
+    }.subscribe(onNext: configureNewStackView).disposed(by: bag)
     
-    let disposable = NotificationCenter.default.reactive.notifications(forName: Notification.Name.UIApplicationWillEnterForeground).observeValues { _ in
-      self.animationDisposable.inner = self.animationProducer?.start()
-    }
-    
-    if let disposable = disposable {
-      deallocDisposable = ScopedDisposable(disposable)
-    }
+//    NotificationCenter.default.rx.notification(.UIApplicationWillEnterForeground).subscribe { _ in
+//      self.animationDisposable.inner = self.animationProducer?.start()
+//    }.disposed(by: bag)
   }
   
-  private var animationProducer: SignalProducer<(), NoError>?
-  private let animationDisposable = SerialDisposable()
+  private var animationProducer: Observable<()>?
+//  private let animationDisposable = SerialDisposable()
   
   private func configureNewStackView(labels: [UILabel]) {
     self.stackView = UIStackView()
@@ -93,7 +81,7 @@ public class MultilineLabelView: UIView {
     let viewsTuples = labels.map { ($0, UIView()) }
     let animationSpeed = CGFloat(40)
     
-    let animationProducers = viewsTuples.flatMap { label, view -> SignalProducer<(), NoError>? in
+    let animationProducers = viewsTuples.flatMap { label, view -> Observable<()>? in
       view.isOpaque = false
       view.translatesAutoresizingMaskIntoConstraints = false
       
@@ -117,7 +105,7 @@ public class MultilineLabelView: UIView {
         label.bottomAnchor.constraint(equalTo: labelCopy.bottomAnchor).isActive = true
         labelCopy.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 30).isActive = true
         
-        return SignalProducer<(), NoError> { observer, disposable in
+        return Observable.create({ (observer) -> Disposable in
           leadingConstraint.constant = 10
           view.layoutIfNeeded()
           
@@ -128,11 +116,11 @@ public class MultilineLabelView: UIView {
                           leadingConstraint.constant = 10-(attributedStringWidth+30)
                           view.layoutIfNeeded()
           }, completion: { success in
-            observer.sendCompleted()
+            observer.onCompleted()
           })
           
-          disposable.observeEnded(view.layer.removeAllAnimations)
-        }
+          return Disposables.create(with: view.layer.removeAllAnimations)
+        })
       } else {
         view.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
         return nil
@@ -144,9 +132,7 @@ public class MultilineLabelView: UIView {
     layoutIfNeeded()
     
     if animationProducers.count > 0 {
-      animationProducer = SignalProducer<SignalProducer<(), NoError>, NoError>(animationProducers).flatMap(.merge, {
-        $0
-      }).repeat(Int.max)
+      animationProducer = Observable.from(animationProducers).flatMap({ $0 })
     }
     
     UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0.0, options: [], animations: {
@@ -154,15 +140,8 @@ public class MultilineLabelView: UIView {
       self.layoutIfNeeded()
     }) { (success: Bool) -> Void in
       if success {
-        self.animationDisposable.inner = self.animationProducer?.start()
+        self.animationProducer?.subscribe().disposed(by: self.bag)
       }
-      
     }
   }
-}
-
-public typealias MultilineLabelStringsProducer = SignalProducer<[NSAttributedString], NoError>
-
-public protocol MultilineLabelViewDataSource {
-  var stringsProducer: MultilineLabelStringsProducer { get }
 }

@@ -7,13 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0231C8E0204B439800F7DA6E /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0231C8DE204B439800F7DA6E /* RxCocoa.framework */; };
+		0231C8E1204B439800F7DA6E /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0231C8DF204B439800F7DA6E /* RxSwift.framework */; };
 		028B3D601D9EF2A500924284 /* MultilineLabelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 028B3D5E1D9EF2A500924284 /* MultilineLabelView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		028B3D671D9EF2AF00924284 /* MultilineLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028B3D661D9EF2AF00924284 /* MultilineLabelView.swift */; };
-		028B3D6F1D9EF4F200924284 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 028B3D6D1D9EF4F200924284 /* ReactiveSwift.framework */; };
-		028B3D701D9EF4F200924284 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 028B3D6E1D9EF4F200924284 /* Result.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0231C8DA204B438A00F7DA6E /* RxCocoa.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = RxCocoa.framework.dSYM; path = Carthage/Build/iOS/RxCocoa.framework.dSYM; sourceTree = "<group>"; };
+		0231C8DB204B438A00F7DA6E /* RxSwift.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = RxSwift.framework.dSYM; path = Carthage/Build/iOS/RxSwift.framework.dSYM; sourceTree = "<group>"; };
+		0231C8DE204B439800F7DA6E /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = Carthage/Build/iOS/RxCocoa.framework; sourceTree = "<group>"; };
+		0231C8DF204B439800F7DA6E /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
 		028B3D5B1D9EF2A500924284 /* MultilineLabelView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MultilineLabelView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		028B3D5E1D9EF2A500924284 /* MultilineLabelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultilineLabelView.h; sourceTree = "<group>"; };
 		028B3D5F1D9EF2A500924284 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -28,8 +32,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				028B3D6F1D9EF4F200924284 /* ReactiveSwift.framework in Frameworks */,
-				028B3D701D9EF4F200924284 /* Result.framework in Frameworks */,
+				0231C8E0204B439800F7DA6E /* RxCocoa.framework in Frameworks */,
+				0231C8E1204B439800F7DA6E /* RxSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +71,10 @@
 		028B3D6C1D9EF4F200924284 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0231C8DE204B439800F7DA6E /* RxCocoa.framework */,
+				0231C8DF204B439800F7DA6E /* RxSwift.framework */,
+				0231C8DA204B438A00F7DA6E /* RxCocoa.framework.dSYM */,
+				0231C8DB204B438A00F7DA6E /* RxSwift.framework.dSYM */,
 				028B3D6D1D9EF4F200924284 /* ReactiveSwift.framework */,
 				028B3D6E1D9EF4F200924284 /* Result.framework */,
 			);
